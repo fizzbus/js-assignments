@@ -38,7 +38,7 @@ function concatenateStrings(value1, value2) {
  *   ''      => 0
  */
 function getStringLength(value) {
-    return value.length();
+    return value.length;
 }
 
 /**
@@ -69,7 +69,7 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-    let start = 'Hello, '.length()-1;
+    let start = 'Hello, '.length;
     let finish = value.indexOf('!');
     return value.substring(start, finish);
 }
@@ -132,7 +132,7 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-    str.replace(value, '');
+    return str.replace(value, '');
 }
 
 /**
@@ -203,7 +203,8 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-    for(i = 0; i < height; i++){
+    let res = '';
+    for(let i = 0; i < height; i++){
         let line = '';
         switch(i){
             case 0:
@@ -215,7 +216,7 @@ function getRectangleString(width, height) {
             default:
                 line +='│';
         }
-        for(j = 0; j < width-2; j++){
+        for(let j = 0; j < width-2; j++){
             if(i === 0 || i === height-1){
                 line +='─';
             }
@@ -233,8 +234,9 @@ function getRectangleString(width, height) {
             default:
                 line +='│';
         }
-        console.log(line);
+        res += line + '\n';
     }
+    return res;
 }
 
 
@@ -255,7 +257,8 @@ function getRectangleString(width, height) {
  */
 function encodeToRot13(str) {
     return str.split('')
-        .map(char => String.fromCharCode(char.charCodeAt(0) + (char.toLowerCase() < 'n' ? 13 : -13)))
+        .map(char => char.match(/[A-Za-z]/i) ? 
+            String.fromCharCode(char.charCodeAt(0) + (char.toLowerCase() < 'n' ? 13 : -13)) : char)
         .join('');
 }
 
@@ -305,22 +308,21 @@ function isString(value) {
 function getCardId(value) {
     let add1 = 0;
     let add2 = 0;
-    let char1 = value.charAt(0);
-    let char2 = value.charAt(1);
-    if(isString(char1)) {
-        switch(char1){
-            case 'A': add1 = 0;
-                break;
-            case 'J': add1 = 10;
-                break;
-            case 'Q': add1 = 11;
-                break;
-            case 'K': add1 = 12;
-                break;
-        }
-    }
-    else if(typeof char1 === 'number' || char1 instanceof Number) {
-        add1 = char1-1;
+    let char1 = value.replace(/[♣♦♥♠]/, '');
+    let char2 = value.match(/[♣♦♥♠]/)[0];
+    console.log(char1 
+        + "-" + char2);
+    switch(char1){
+        case 'A': add1 = 0;
+            break;
+        case 'J': add1 = 10;
+            break;
+        case 'Q': add1 = 11;
+            break;
+        case 'K': add1 = 12;
+            break;
+        default:
+            add1 = +char1-1;
     }
 
     let suits = ['♣', '♦', '♥', '♠']
